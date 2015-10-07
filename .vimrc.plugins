@@ -1,0 +1,53 @@
+" this vimrc contains plugin additions and
+" also other things that require external installations
+" beyond standard vim
+
+" format json inline
+command Json :%!python -m json.tool
+
+" #### BEGIN PLUGIN CONFIGURATION
+" install vundle: https://github.com/gmarik/vundle
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" Equipping VIM for javascript, YCM and tern: http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
+Plugin 'Valloric/YouCompleteMe'
+" you will need to run npm install in the bundle directory for tern for vim
+Plugin 'marijnh/tern_for_vim'
+
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'bling/vim-airline'
+
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+" assumes NERDTree is installed: https://github.com/scrooloose/nerdtree
+map <C-n> :NERDTreeToggle<CR>
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Raimondi/delimitMate'
+Plugin 'kien/ctrlp.vim'
+" make ctrlp's default command MRU files
+let g:ctrlp_cmd = 'CtrlPMRUFiles'
+map <C-p>o :CtrlP<CR>
+Plugin 'mtth/scratch.vim'
+Plugin 'gcmt/taboo.vim'
+" TODO find a better shortcut for this
+"map <C-t> :TabooRename
+"seems to be causing perf issues in macvim?
+"Plugin 'airblade/vim-gitgutter'
+"Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'henrik/vim-open-url'
+Plugin 'mileszs/ack.vim'
+" set silver searcher as default search instead of ack
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
+call vundle#end()
+
+syntax enable
+set background=light
+colorscheme solarized
+""" ### END PLUGIN CONFIGURATION

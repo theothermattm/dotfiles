@@ -1,0 +1,144 @@
+# for homebrew, make sure homebrew stuff is last in path
+export PATH=/usr/local/bin:/usr/local/sbin:~/bin:$PATH
+
+function mi() { mvim "$@" ;}
+
+alias listjvms='/usr/libexec/java_home -V'
+alias workspaces='cd ~/workspaces'
+
+# git
+alias gs='clear; git status'
+alias sstatus='clear; svn status'
+function gadd() { git add "$@" ;}
+
+# show recently updated branches http://stackoverflow.com/a/5972362
+function gbranches() { git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)' ;}
+
+# java
+export MAVEN_OPTS='-Xmx2048m -XX:MaxPermSize=2048m '$MAVEN_OPTS
+
+if [ "$(uname)" == "Darwin" ]; then
+    ## This is OS X specific stuff
+    ## list out all the jvm's you have
+    alias javaversions='/usr/libexec/java_home -V'
+
+    # handle weird tmux copy/paste issues
+    # assumes brew install reattach-to-user-namespace has
+    # been installed 
+    if [[ -n $TMUX ]]; then
+        function vim() { reattach-to-user-namespace vim "$@";}
+        alias vi=vim
+    fi
+fi
+
+if [ -n "$ZSH_VERSION" ]; then
+    # assume Zsh
+    export PS1='%m%\:%~$ ' 
+elif [ -n "$BASH_VERSION" ]; then
+    # assume Bash
+    shopt -s histappend
+    # history stuff, erase dups, save on session close
+    export HISTCONTROL=erasedups
+    export HISTSIZE=10000
+fi
+
+parse_git_branch() {
+
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+
+}
+
+#export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
+set -o vi
+
+# command to set title bar of command window/tab to whatever you want
+function title {
+    echo -ne "\033]0;"$*"\007"
+}
+
+alias cd=cd_func
+# little funtction from
+# http://www.oliverelliott.org/article/computing/ref_unix/75/
+# to make cd history easier
+cd_func ()
+{   
+    local x2 the_new_dir adir index;
+    local -i cnt;
+    if [[ $1 == "--" ]]; then
+        dirs -v;
+        return 0;
+    fi;
+    the_new_dir=$1;
+    [[ -z $1 ]] && the_new_dir=$HOME;
+    if [[ ${the_new_dir:0:1} == '-' ]]; then
+        index=${the_new_dir:1};
+        [[ -z $index ]] && index=1;
+        adir=$(dirs +$index);
+        [[ -z $adir ]] && return 1;
+        the_new_dir=$adir;
+    fi;
+    [[ ${the_new_dir:0:1} == '~' ]] && the_new_dir="${HOME}${the_new_dir:1}";
+    pushd "${the_new_dir}" > /dev/null;
+    [[ $? -ne 0 ]] && return 1;
+    the_new_dir=$(pwd);
+    popd -n +11 2> /dev/null > /dev/null;
+    for ((cnt=1; cnt <= 10; cnt++))
+    do  
+        x2=$(dirs +${cnt} 2>/dev/null);
+        [[ $? -ne 0 ]] && return 0;
+        [[ ${x2:0:1} == '~' ]] && x2="${HOME}${x2:1}";
+        if [[ "${x2}" == "${the_new_dir}" ]]; then
+            popd -n +$cnt 2> /dev/null > /dev/null;
+            cnt=cnt-1;
+        fi;
+    done;
+    return 0
+}
+
+# http://www.clock.co.uk/blog/a-guide-on-how-to-cache-npm-install-with-docker
+# Fixes package.json timestamp so that docker builds go faster
+function fixpackagejson() {
+
+    REV=$(git rev-list -n 1 HEAD 'package.json');
+    STAMP=$(git show --pretty=format:%at --abbrev-commit "$REV" | head -n 1);
+    DATE=$(date -r "$STAMP" '+%Y%m%d%H%M.%S');
+    touch -h -t "$DATE" package.json;
+}
+
+# http://www.clock.co.uk/blog/a-guide-on-how-to-cache-npm-install-with-docker
+# Fixes bower.json timestamp so that docker builds go faster
+function fixbowerjson() {
+
+    REV=$(git rev-list -n 1 HEAD 'bower.json');
+    STAMP=$(git show --pretty=format:%at --abbrev-commit "$REV" | head -n 1);
+    DATE=$(date -r "$STAMP" '+%Y%m%d%H%M.%S');
+    touch -h -t "$DATE" bower.json;
+}
+
+function fixdockerfiles() {
+
+    fixpackagejson && fixbowerjson
+}
+
+# from a coworkers helpful dotfiles
+alias p=pwd
+alias v=vim
+alias c=clear
+alias g=git
+alias l='ls -al'
+alias lr='ls -ltr| more'
+alias m=more
+alias lt='ls -lrt | more'
+alias ll='ls -al | more'
+alias la='ls -lart | more'
+alias lsd='ls -lt | grep "^d"'
+#alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias lo=logout
+alias cls=clear
+alias h=history
+alias tf='tail -f $1'
+alias myps='ps -aef | grep -i $1'
+alias mt='ps -aef | grep -i tomcat'
+alias sb='echo Sourcing bash;source ~/.bash_profile'
