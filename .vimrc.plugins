@@ -5,6 +5,8 @@
 " format json inline
 command Json :%!python -m json.tool
 
+command Md :!open /Applications/Mou.app %:p
+
 " #### BEGIN PLUGIN CONFIGURATION
 " install vundle: https://github.com/gmarik/vundle
 call vundle#begin()
