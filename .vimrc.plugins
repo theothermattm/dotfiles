@@ -42,7 +42,7 @@ Plugin 'gcmt/taboo.vim'
 "seems to be causing perf issues in macvim?
 "Plugin 'airblade/vim-gitgutter'
 "Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'henrik/vim-open-url'
+"Plugin 'henrik/vim-open-url'
 Plugin 'mileszs/ack.vim'
 " set silver searcher as default search instead of ack
 let g:ackprg = 'ag --nogroup --nocolor --column'
