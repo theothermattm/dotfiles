@@ -28,8 +28,8 @@ set ruler
 " Display extra whitespace
 set list listchars=tab:»·,trail:·,nbsp:·
 
-" Make it obvious where 80 characters is
-set textwidth=80
+" Set 80 char limit on markdown files
+au BufRead,BufNewFile *.md setlocal textwidth=80
 set colorcolumn=+1
 
 " Enable spellchecking for Markdown
