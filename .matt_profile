@@ -6,6 +6,10 @@ function mi() { mvim "$@" ;}
 alias listjvms='/usr/libexec/java_home -V'
 alias workspaces='cd ~/workspaces'
 
+# for nvm
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
+
 # git
 alias gs='clear; git status'
 alias sstatus='clear; svn status'
@@ -22,13 +26,6 @@ if [ "$(uname)" == "Darwin" ]; then
     ## list out all the jvm's you have
     alias javaversions='/usr/libexec/java_home -V'
 
-    # handle weird tmux copy/paste issues
-    # assumes brew install reattach-to-user-namespace has
-    # been installed 
-    if [[ -n $TMUX ]]; then
-        function vim() { reattach-to-user-namespace vim "$@";}
-        alias vi=vim
-    fi
 fi
 
 if [ -n "$ZSH_VERSION" ]; then
