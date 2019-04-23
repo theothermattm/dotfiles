@@ -6,6 +6,15 @@ function mi() { mvim "$@" ;}
 alias listjvms='/usr/libexec/java_home -V'
 alias workspaces='cd ~/workspaces'
 
+# send notifications on MacOS Mavericks and greater
+# Ex: npm install && sys-notify Hey! "your install is done!"
+# From https://apple.stackexchange.com/a/303290
+function _sys_notify() {
+    local notification_command="display notification \"$2\" with title \"$1\""
+    osascript -e "$notification_command"
+}
+alias sys-notify="_sys_notify $1 $2"
+
 # for nvm
 export NVM_DIR="$HOME/.nvm"
 . "/usr/local/opt/nvm/nvm.sh"
