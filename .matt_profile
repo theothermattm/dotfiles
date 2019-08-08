@@ -3,8 +3,13 @@ export PATH=/usr/local/bin:/usr/local/sbin:~/bin:$PATH
 
 function mi() { mvim "$@" ;}
 
-alias listjvms='/usr/libexec/java_home -V'
-alias workspaces='cd ~/workspaces'
+alias listjvms='/usr/libexec/java_home -V' #alias workspaces='cd ~/workspaces'
+
+# if pyenv is installed, initialize it
+if hash pyenv 2>/dev/null; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
 
 # send notifications on MacOS Mavericks and greater
 # Ex: npm install && sys-notify Hey! "your install is done!"
@@ -99,31 +104,6 @@ cd_func ()
         fi;
     done;
     return 0
-}
-
-# http://www.clock.co.uk/blog/a-guide-on-how-to-cache-npm-install-with-docker
-# Fixes package.json timestamp so that docker builds go faster
-function fixpackagejson() {
-
-    REV=$(git rev-list -n 1 HEAD 'package.json');
-    STAMP=$(git show --pretty=format:%at --abbrev-commit "$REV" | head -n 1);
-    DATE=$(date -r "$STAMP" '+%Y%m%d%H%M.%S');
-    touch -h -t "$DATE" package.json;
-}
-
-# http://www.clock.co.uk/blog/a-guide-on-how-to-cache-npm-install-with-docker
-# Fixes bower.json timestamp so that docker builds go faster
-function fixbowerjson() {
-
-    REV=$(git rev-list -n 1 HEAD 'bower.json');
-    STAMP=$(git show --pretty=format:%at --abbrev-commit "$REV" | head -n 1);
-    DATE=$(date -r "$STAMP" '+%Y%m%d%H%M.%S');
-    touch -h -t "$DATE" bower.json;
-}
-
-function fixdockerfiles() {
-
-    fixpackagejson && fixbowerjson
 }
 
 # from a coworkers helpful dotfiles
