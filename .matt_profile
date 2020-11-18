@@ -9,6 +9,8 @@ alias listjvms='/usr/libexec/java_home -V' #alias workspaces='cd ~/workspaces'
 if hash pyenv 2>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
+    export LDFLAGS="-L/usr/local/opt/zlib/lib"
+    export CPPFLAGS="-I/usr/local/opt/zlib/include"
 fi
 
 # send notifications on MacOS Mavericks and greater
@@ -35,22 +37,45 @@ function gbranches() { git for-each-ref --count=30 --sort=-committerdate refs/he
 # java
 export MAVEN_OPTS='-Xmx2048m -XX:MaxPermSize=2048m '$MAVEN_OPTS
 
-if [ "$(uname)" == "Darwin" ]; then
+if [[ "$(uname)" == "Darwin" ]]; then
     ## This is OS X specific stuff
     ## list out all the jvm's you have
     alias javaversions='/usr/libexec/java_home -V'
-
 fi
 
 if [ -n "$ZSH_VERSION" ]; then
     # assume Zsh
-    export PS1='%m%\:%~$ ' 
+    # use whatever's in .zshrc
+    echo "Using ZSH!"
 elif [ -n "$BASH_VERSION" ]; then
     # assume Bash
     shopt -s histappend
     # history stuff, erase dups, save on session close
     export HISTCONTROL=erasedups
     export HISTSIZE=10000
+
+    # from a coworkers helpful dotfiles
+    alias p=pwd
+    alias v=vim
+    alias c=clear
+    alias g=git
+    alias l='ls -al'
+    alias lr='ls -ltr| more'
+    alias m=more
+    alias lt='ls -lrt | more'
+    alias ll='ls -al | more'
+    alias la='ls -lart | more'
+    alias lsd='ls -lt | grep "^d"'
+    #alias cp='cp -i'
+    alias mv='mv -i'
+    alias rm='rm -i'
+    alias lo=logout
+    alias cls=clear
+    alias h=history
+    alias tf='tail -f $1'
+    alias myps='ps -aef | grep -i $1'
+    alias mt='ps -aef | grep -i tomcat'
+    alias sb='echo Sourcing bash;source ~/.bash_profile'
 fi
 
 parse_git_branch() {
@@ -106,25 +131,8 @@ cd_func ()
     return 0
 }
 
-# from a coworkers helpful dotfiles
-alias p=pwd
-alias v=vim
-alias c=clear
-alias g=git
-alias l='ls -al'
-alias lr='ls -ltr| more'
-alias m=more
-alias lt='ls -lrt | more'
-alias ll='ls -al | more'
-alias la='ls -lart | more'
-alias lsd='ls -lt | grep "^d"'
-#alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-alias lo=logout
-alias cls=clear
-alias h=history
-alias tf='tail -f $1'
-alias myps='ps -aef | grep -i $1'
-alias mt='ps -aef | grep -i tomcat'
-alias sb='echo Sourcing bash;source ~/.bash_profile'
+# https://dev.to/rmpato/git-pull-multiple-repositories-at-once-4l68
+alias multipull="find . -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} pull \;"
+function multicheckout() {
+  find . -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} checkout $1 \;
+}
