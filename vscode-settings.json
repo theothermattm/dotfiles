@@ -1,9 +1,0 @@
-{"vim.insertModeKeyBindings": [
-    {
-      "before": ["j", "k"],
-      "after": ["<Esc>"]
-    }
-],
-"vim.useSystemClipboard" : true,
-"workbench.colorTheme": "Default Light+"
-}

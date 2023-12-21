@@ -69,7 +69,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions node npm brew osx extract z)
+plugins=(git zsh-autosuggestions node npm brew macos extract z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -103,5 +103,6 @@ source $ZSH/oh-my-zsh.sh
 # pull in common stuff
 source ~/.matt_profile
 
-# ugh java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home
+eval "$(direnv hook zsh)"
+
+alias requestprivs="/Applications/Privileges.app/Contents/Resources/PrivilegesCLI --add"

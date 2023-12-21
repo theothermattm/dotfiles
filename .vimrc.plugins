@@ -52,5 +52,5 @@ call vundle#end()
 
 syntax enable
 set background=light
-colorscheme solarized
+"colorscheme solarized
 """ ### END PLUGIN CONFIGURATION

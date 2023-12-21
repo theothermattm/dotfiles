@@ -50,7 +50,7 @@ set hlsearch
 set nowrap
 set autoindent
 set smarttab
-set shiftwidth=4
+set shiftwidth=2
 set expandtab
 
 " lets you use . to repeat things in visual mode
