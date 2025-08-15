@@ -8,6 +8,7 @@ return {
       sort = {
         fields = { "modified" },
       },
+      cwd = true,
       hidden = false,
       ignored = true,
       exclude = { ".DS_Store" },
