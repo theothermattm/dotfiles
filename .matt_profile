@@ -47,7 +47,6 @@ fi
 if [ -n "$ZSH_VERSION" ]; then
     # assume Zsh
     # use whatever's in .zshrc
-    echo "Using ZSH!"
 elif [ -n "$BASH_VERSION" ]; then
     # assume Bash
     shopt -s histappend
